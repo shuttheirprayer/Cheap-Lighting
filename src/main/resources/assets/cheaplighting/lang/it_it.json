@@ -1,0 +1,21 @@
+{
+  "cheaplighting.menu.light_sources": "Fonti luminose dinamiche",
+  "cheaplighting.menu.title": "Impostazioni di CheapLighting",
+  "cheaplighting.menu.canvas.1": "È raccomandato disattivare le luci dinamiche delle entità con Canvas!",
+  "cheaplighting.menu.canvas.2": "Attualmente la luminosità dinamica è molto pesante con Canvas!",
+  "cheaplighting.menu.tabs.general": "Generali",
+  "cheaplighting.option.light_sources.block_entities": "Blocchi Entità",
+  "cheaplighting.option.light_sources.entities": "Entità",
+  "cheaplighting.option.light_sources.self": "Prima Persona",
+  "cheaplighting.option.light_sources.water_sensitive_check": "Controllo Sensibilità nell'acqua",
+  "cheaplighting.option.mode": "Luci dinamiche",
+  "cheaplighting.tooltip.block_entities": "Attiva l'illuminazione dinamica delle entità blocco.",
+  "cheaplighting.tooltip.creeper_lighting": "Imposta la modalità d'illuminazione dinamica dei Creeper.\n- %s disattiva l'illuminazione dinamica dei Creeper.\n- %s imposta una luminosità costante.\n- %s imposta una luminosità dinamica.",
+  "cheaplighting.tooltip.entities": "Attiva l'illuminazione dinamica delle entità. Nota: l'illuminazione dinamica dei giocatori è sempre attiva.",
+  "cheaplighting.tooltip.mode.1": "Attiva le luci dinamiche. Se attivo, per esempio, un giocatore con una torcia in mano emetterà luce.",
+  "cheaplighting.tooltip.mode.2": "%s e %s avranno un leggero ritardo ma minimizzeranno gli aggiornamenti della luce.",
+  "cheaplighting.tooltip.mode.3": "%s attiva l'illuminazione dinamica soffusa.",
+  "cheaplighting.tooltip.tnt_lighting": "Imposta la modalità d'illuminazione dinamica della TNT.\n- %s disattiva l'illuminazione dinamica della TNT.\n- %s imposta una luminosità costante.\n- %s imposta una luminosità dinamica.",
+  "cheaplighting.tooltip.self_light_source": "Abilita luci dinamiche in prima persona. È raccomandato disabilitarle se si usano shaders con la propria implementazione di luci dinamiche.",
+  "cheaplighting.tooltip.water_sensitive": "Attiva il controllo delle fonti di luce sensibili all'acqua. Questo vuol dire che certi oggetti non emetteranno luce mentre sommersi."
+}

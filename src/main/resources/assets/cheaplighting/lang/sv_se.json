@@ -1,0 +1,18 @@
+{
+  "cheaplighting.menu.light_sources": "Dynamiska ljuskällor",
+  "cheaplighting.menu.title": "CheapLighting-inställningar",
+  "cheaplighting.menu.canvas.1": "Att avaktivera entities dynamiska ljus rekommenderas med Canvas!",
+  "cheaplighting.menu.canvas.2": "Dynamiskt ljus med Canvas är prestandakrävande!",
+  "cheaplighting.option.light_sources.block_entities": "Blockentities",
+  "cheaplighting.option.light_sources.entities": "Entities",
+  "cheaplighting.option.light_sources.water_sensitive_check": "Vattenkänslighetstest",
+  "cheaplighting.option.mode": "Dynamiskt Ljus",
+  "cheaplighting.tooltip.block_entities": "Aktiverar blockentitiers dynamiska ljus.",
+  "cheaplighting.tooltip.creeper_lighting": "Aktiverar Creeperns dynamiska ljusläge.\n- %s avaktiverar Creeperns dynamiska ljus.\n- %s sätter en konstant luminans.\n- %s sätter en dynamisk luminans.",
+  "cheaplighting.tooltip.entities": "Aktiverar entities dynamiska ljus. Notera: spelare är alltid aktiva.",
+  "cheaplighting.tooltip.mode.1": "Aktiverar dynamiskt ljus. Om påslaget kommer t.ex. en spelare som håller en fackla lysa upp området.",
+  "cheaplighting.tooltip.mode.2": "%s och %s kommer att lagga lite bakom men minimerar ljusuppdateringar.",
+  "cheaplighting.tooltip.mode.3": "%s är jämnt dynamiskt ljus.",
+  "cheaplighting.tooltip.tnt_lighting": "Sätter TNT:ns dynamiska ljusläge.\n- %s avaktiverar TNT:ns dynamiska ljus.\n- %s sätter en konstant luminans.\n- %s sätter en dynamisk luminans.",
+  "cheaplighting.tooltip.water_sensitive": "Aktiverar det vattenkänsliga ljuskällstestet. Detta innebär att vissa föremål inte kommer att ge ifrån sig ljus när de är under vatten."
+}

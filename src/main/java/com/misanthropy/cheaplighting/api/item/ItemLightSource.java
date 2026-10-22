@@ -1,0 +1,160 @@
+package com.misanthropy.cheaplighting.api.item;
+
+import com.google.gson.JsonObject;
+import com.misanthropy.cheaplighting.CheapLighting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+
+public abstract class ItemLightSource {
+	private final ResourceLocation id;
+	private final Item item;
+	private final boolean waterSensitive;
+
+	public ItemLightSource(ResourceLocation id, Item item, boolean waterSensitive) {
+		this.id = id;
+		this.item = item;
+		this.waterSensitive = waterSensitive;
+	}
+
+	public ItemLightSource(ResourceLocation id, Item item) {
+		this(id, item, false);
+	}
+
+	public ResourceLocation id() {
+		return this.id;
+	}
+
+	public Item item() {
+		return this.item;
+	}
+
+	public boolean waterSensitive() {
+		return this.waterSensitive;
+	}
+
+	public int getLuminance(ItemStack stack, boolean submergedInWater) {
+		if (this.waterSensitive() && CheapLighting.get().config.getWaterSensitiveCheck().get() && submergedInWater)
+			return 0;
+
+		return this.getLuminance(stack);
+	}
+
+	public abstract int getLuminance(ItemStack stack);
+
+	@Override
+	public String toString() {
+		return "ItemLightSource{" +
+				"id=" + this.id() +
+				"item=" + this.item() +
+				", water_sensitive=" + this.waterSensitive() +
+				'}';
+	}
+
+	public static @NotNull Optional<ItemLightSource> fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
+		if (!json.has("item") || !json.has("luminance")) {
+			CheapLighting.get().warn("Failed to parse item light source \"" + id + "\", invalid format: missing required fields.");
+			return Optional.empty();
+		}
+
+		var affectId = ResourceLocation.tryParse(json.get("item").getAsString());
+
+		var item = BuiltInRegistries.ITEM.get(affectId);
+
+		if (item == Items.AIR)
+			return Optional.empty();
+
+		boolean waterSensitive = false;
+		if (json.has("water_sensitive"))
+			waterSensitive = json.get("water_sensitive").getAsBoolean();
+
+		var luminanceElement = json.get("luminance").getAsJsonPrimitive();
+		if (luminanceElement.isNumber()) {
+			return Optional.of(new StaticItemLightSource(id, item, luminanceElement.getAsInt(), waterSensitive));
+		} else if (luminanceElement.isString()) {
+			var luminanceStr = luminanceElement.getAsString();
+			if (luminanceStr.equals("block")) {
+				if (item instanceof BlockItem blockItem) {
+					return Optional.of(new BlockItemLightSource(id, item, blockItem.getBlock().defaultBlockState(), waterSensitive));
+				}
+			} else {
+				var blockId = ResourceLocation.tryParse(luminanceStr);
+				if (blockId != null) {
+					var block = BuiltInRegistries.BLOCK.get(blockId) ;
+					if (block != Blocks.AIR)
+						return Optional.of(new BlockItemLightSource(id, item, block.defaultBlockState(), waterSensitive));
+				}
+			}
+		} else {
+			CheapLighting.get().warn("Failed to parse item light source \"" + id + "\", invalid format: \"luminance\" field value isn't string or integer.");
+		}
+
+		return Optional.empty();
+	}
+
+	public static class StaticItemLightSource extends ItemLightSource {
+		private final int luminance;
+
+		public StaticItemLightSource(ResourceLocation id, Item item, int luminance, boolean waterSensitive) {
+			super(id, item, waterSensitive);
+			this.luminance = luminance;
+		}
+
+		public StaticItemLightSource(ResourceLocation id, Item item, int luminance) {
+			super(id, item);
+			this.luminance = luminance;
+		}
+
+		@Override
+		public int getLuminance(ItemStack stack) {
+			return this.luminance;
+		}
+	}
+
+	public static class BlockItemLightSource extends ItemLightSource {
+		private final BlockState mimic;
+
+		public BlockItemLightSource(ResourceLocation id, Item item, BlockState block, boolean waterSensitive) {
+			super(id, item, waterSensitive);
+			this.mimic = block;
+		}
+
+		@Override
+		public int getLuminance(ItemStack stack) {
+			return getLuminance(stack, this.mimic);
+		}
+
+		static int getLuminance(ItemStack stack, BlockState state) {
+			var nbt = stack.getTag();
+
+			if (nbt != null && nbt.contains("BlockStateTag", Tag.TAG_COMPOUND)) {
+				var blockStateTag = nbt.getCompound("BlockStateTag");
+				var stateManager = state.getBlock().getStateDefinition();
+
+				for (var key : blockStateTag.getAllKeys()) {
+					var property = stateManager.getProperty(key);
+					if (property != null) {
+						var value = blockStateTag.get(key).toString();
+						state = updateState(state, property, value);
+					}
+				}
+			}
+
+			return state.getLightEmission();
+		}
+
+		private static <T extends Comparable<T>> BlockState updateState(BlockState state, Property<T> property, String value) {
+			return property.getValue(value).map(v -> state.setValue(property, v)).orElse(state);
+		}
+	}
+}

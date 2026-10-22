@@ -1,0 +1,18 @@
+{
+  "cheaplighting.menu.light_sources": "Dünaamilised valgusallikad",
+  "cheaplighting.menu.title": "CheapLightingi seaded",
+  "cheaplighting.menu.canvas.1": "Canvase puhul on soovitatav olemite dünaamiline valgustus keelata!",
+  "cheaplighting.menu.canvas.2": "Dünaamiline valgustus nõuab hetkel Canvasega kasutades suurt jõudlust!",
+  "cheaplighting.option.light_sources.block_entities": "Plokiolemid",
+  "cheaplighting.option.light_sources.entities": "Olemid",
+  "cheaplighting.option.light_sources.water_sensitive_check": "Vee tundlikkuse kontroll",
+  "cheaplighting.option.mode": "Dünaamiline valgustus",
+  "cheaplighting.tooltip.block_entities": "Lubab dünaamilise valgustuse plokiolemitele.",
+  "cheaplighting.tooltip.creeper_lighting": "Määrab creeperi dünaamilise valgustuse režiimi.\n- %s keelab creeperi dünaamilise valgustuse.\n- %s määrab püsiva ereduse.\n- %s määrab dünaamilise ereduse.",
+  "cheaplighting.tooltip.entities": "Lubab olemite dünaamilise valgustuse. Märkus: mängijad on alati aktiivsed.",
+  "cheaplighting.tooltip.mode.1": "Lubab dünaamilise valgustuse. Lubamisel valgustab näiteks tõrvikut hoidev mängija teda ümbritsevat ala.",
+  "cheaplighting.tooltip.mode.2": "%s ja %s on väikese viiteajaga, kuid minimeerivad valgusuuendusi.",
+  "cheaplighting.tooltip.mode.3": "%s on sujuv dünaamiline valgustus.",
+  "cheaplighting.tooltip.tnt_lighting": "Määrab dünamiidi dünaamilise valgustuse režiimi.\n- %s keelab dünamiidi dünaamilise valgustuse.\n- %s määrab püsiva ereduse.\n- %s määrab dünaamilise ereduse.",
+  "cheaplighting.tooltip.water_sensitive": "Lubab veetundliku valgusallikate kontrolli. See tähendab, et mõned esemed ei erita valgust vee all."
+}

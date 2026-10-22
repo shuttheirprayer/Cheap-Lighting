@@ -1,0 +1,21 @@
+{
+  "cheaplighting.menu.light_sources": "Sumber Cahaya Dinamis",
+  "cheaplighting.menu.title": "Pengaturan CheapLighting",
+  "cheaplighting.menu.canvas.1": "Disarankan untuk menonaktifkan pencahayaan dinamis entitas dengan Canvas!",
+  "cheaplighting.menu.canvas.2": "Pencahayaan dinamis dengan Canvas saat ini membutuhkan kinerja yang berat!",
+  "cheaplighting.menu.tabs.general": "Umum",
+  "cheaplighting.option.light_sources.block_entities": "Entitas Blok",
+  "cheaplighting.option.light_sources.entities": "Entitas",
+  "cheaplighting.option.light_sources.self": "Sudut pandang orang pertama",
+  "cheaplighting.option.light_sources.water_sensitive_check": "Pemeriksaan Sensitivitas Air",
+  "cheaplighting.option.mode": "Cahaya Dinamis",
+  "cheaplighting.tooltip.block_entities": "Mengaktifkan pencahayaan dinamis blok entitas",
+  "cheaplighting.tooltip.creeper_lighting": "Mengatur mode pencahayaan dinamis Creeper.\n- %s menonaktifkan pencahayaan dinamis Creeper.\n- %s mengaktifkan pencahayaan konstan.\n- %s mengatur pencahayaan dinamis.",
+  "cheaplighting.tooltip.entities": "Mengaktifkan pencahayaan dinamis entitas. Catatan: pemain selalu aktif.",
+  "cheaplighting.tooltip.mode.1": "Mengaktifkan lampu dinamis. Jika diaktifkan, pemain yang memegang obor akan menerangi area tersebut",
+  "cheaplighting.tooltip.mode.2": "%s dan %s akan sedikit lag tetapi meminimalkan pembaruan ringan.",
+  "cheaplighting.tooltip.mode.3": "%s adalah pencahayaan dinamis yang mulus.",
+  "cheaplighting.tooltip.self_light_source": "Mengaktifkan pencahayaan dinamis orang pertama. Sebaiknya nonaktifkan ini jika kamu menggunakan shader yang memiliki pencahayaan dinamis sendiri.",
+  "cheaplighting.tooltip.tnt_lighting": "Mengatur mode pencahayaan dinamis TNT.\n- %s menonaktifkan pencahayaan dinamis TNT.\n- %s menetapkan luminansi konstan.\n- %s menetapkan pencahayaan dinamis.",
+  "cheaplighting.tooltip.water_sensitive": "Mengaktifkan pemeriksaan sumber cahaya yang sensitif terhadap air. Ini berarti beberapa item tidak akan memancarkan cahaya ketika terendam di dalam air."
+}

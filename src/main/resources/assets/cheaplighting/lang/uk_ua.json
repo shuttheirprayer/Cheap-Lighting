@@ -1,0 +1,21 @@
+{
+  "cheaplighting.menu.light_sources": "Джерела динамічного освітлення",
+  "cheaplighting.menu.title": "Налаштування CheapLighting",
+  "cheaplighting.menu.canvas.1": "Рекомендовано відключати динамічне освітлення істот із модом Canvas!",
+  "cheaplighting.menu.canvas.2": "Динамічне освітлення із модом Canvas наразі має низьку продуктивність!",
+  "cheaplighting.menu.tabs.general": "Загальні",
+  "cheaplighting.option.light_sources.block_entities": "Блоки-істоти",
+  "cheaplighting.option.light_sources.entities": "Істоти",
+  "cheaplighting.option.light_sources.self": "Від першої особи",
+  "cheaplighting.option.light_sources.water_sensitive_check": "Перевірка чутливості до води",
+  "cheaplighting.option.mode": "Динамічне освітлення",
+  "cheaplighting.tooltip.block_entities": "Вмикає динамічне освітлення для блоків-істот.",
+  "cheaplighting.tooltip.creeper_lighting": "Встановлює режим динамічного освітлення для Кріпера.\n- %s вимикає динамічне освітлення для Кріпера.\n- %s встановлює постійне освітлення.\n- %s встановлює динамічне освітлення.",
+  "cheaplighting.tooltip.entities": "Вмикає динамічне освітлення істот. Примітка: для гравців завжди увімкнено.",
+  "cheaplighting.tooltip.mode.1": "Вмикає динамічне освітлення. Для прикладу, якщо увімкнено то гравець, який тримає смолоскип, освітлюватиме область.",
+  "cheaplighting.tooltip.mode.2": "%s і %s будуть трохи відставати, але мінімізує оновлення світла.",
+  "cheaplighting.tooltip.mode.3": "%s це плавне динамічне освітлення.",
+  "cheaplighting.tooltip.self_light_source": "Вмикає динамічне освітлення від першої особи. Рекомендується вимкнути це, якщо ви використовуєте шейдери, які мають власне динамічне освітлення.",
+  "cheaplighting.tooltip.tnt_lighting": "Встановлює режим динамічного освітлення для динаміту.\n- %s вимикає динамічне освітлення для динаміту.\n- %s встановлює постійне освітлення.\n- %s встановлює динамічне освітлення.",
+  "cheaplighting.tooltip.water_sensitive": "Вмикає перевірку чутливих до води джерел світла. Це означає, що деякі предмети не випромінюватимуть світло під час занурення у воду."
+}

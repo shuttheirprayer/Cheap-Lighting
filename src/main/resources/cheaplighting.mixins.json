@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.misanthropy.cheaplighting.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "cheaplighting.refmap.json",
+  "mixins": [],
+  "client": [
+    "BlockEntityTypeMixin",
+    "ClientLevelMixin",
+    "CommonLevelRendererMixin",
+    "DebugScreenOverlayMixin",
+    "EntityRendererMixin",
+    "EntityTypeMixin",
+    "LevelMixin",
+    "LevelRendererMixin",
+    "MinecraftClientMixin",
+    "WorldRendererMixin",
+    "fabric.AoCalculatorMixin",
+    "lightsource.AbstractHurtingProjectileEntityMixin",
+    "lightsource.AbstractMinecartEntityMixin",
+    "lightsource.BlockAttachedEntityMixin",
+    "lightsource.BlockEntityMixin",
+    "lightsource.EntityMixin",
+    "lightsource.LivingEntityMixin",
+    "lightsource.PlayerEntityMixin",
+    "lightsource.PrimedTntEntityMixin",
+    "sodium.LightPipelineMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
