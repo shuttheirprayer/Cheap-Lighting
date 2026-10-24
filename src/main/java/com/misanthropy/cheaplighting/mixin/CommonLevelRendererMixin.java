@@ -1,5 +1,7 @@
 package com.misanthropy.cheaplighting.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.misanthropy.cheaplighting.CheapLighting;
 import com.misanthropy.cheaplighting.accessor.WorldRendererAccessor;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -9,8 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LevelRenderer.class, priority = 900)
 public abstract class CommonLevelRendererMixin implements WorldRendererAccessor {
@@ -18,13 +18,14 @@ public abstract class CommonLevelRendererMixin implements WorldRendererAccessor 
 	@Override
 	public abstract void cheaplighting$scheduleChunkRebuild(int x, int y, int z, boolean important);
 
-	@Inject(
+	@ModifyReturnValue(
 			method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I",
-			at = @At("TAIL"),
-			cancellable = true
+			at = @At("TAIL")
 	)
-	private static void onGetLightmapCoordinates(BlockAndTintGetter level, BlockState state, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-		if (CheapLighting.get().config.getDynamicLightsMode().isEnabled() && !state.isSolidRender(level, pos))
-			cir.setReturnValue(CheapLighting.get().getLightmapWithDynamicLight(pos, cir.getReturnValue()));
+	private static int onGetLightmapCoordinates(int original, @Local(argsOnly = true) BlockAndTintGetter level, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) BlockPos pos) {
+		CheapLighting lighting = CheapLighting.get();
+		if (lighting.getLightSourcesCount() != 0 && lighting.config.getDynamicLightsMode().isEnabled() && !state.isSolidRender(level, pos))
+			return lighting.getLightmapWithDynamicLight(pos, original);
+		return original;
 	}
 }

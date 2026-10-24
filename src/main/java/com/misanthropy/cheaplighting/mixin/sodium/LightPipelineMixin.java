@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,9 +24,12 @@ public abstract class LightPipelineMixin {
 	@Inject(method = "calculate", at = @At("RETURN"), require = 0, remap = false)
 	private void cheaplighting$vertexLight(ModelQuadView quad, BlockPos pos, QuadLightData out, Direction cullFace, Direction lightFace, boolean shade, CallbackInfo ci) {
 		CheapLighting lighting = CheapLighting.get();
-		if (!lighting.config.getDynamicLightsMode().isEnabled())
-			return;
+		if (lighting.getLightSourcesCount() != 0 && lighting.config.getDynamicLightsMode().isEnabled())
+			cheaplighting$applyVertexLight(lighting, quad, pos, out);
+	}
 
+	@Unique
+	private static void cheaplighting$applyVertexLight(CheapLighting lighting, ModelQuadView quad, BlockPos pos, QuadLightData out) {
 		for (int i = 0; i < 4; i++) {
 			double level = lighting.getDynamicLightLevel(pos.getX() + quad.getX(i), pos.getY() + quad.getY(i), pos.getZ() + quad.getZ(i));
 			out.lm[i] = lighting.getLightmapWithDynamicLight(level, out.lm[i]);

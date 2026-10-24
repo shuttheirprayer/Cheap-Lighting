@@ -41,7 +41,7 @@ public abstract class BlockEntityMixin implements DynamicLightSource {
 	@Unique
 	private long cheaplighting$lastUpdate = 0;
 	@Unique
-	private final LongOpenHashSet cheaplighting$trackedLitChunkPos = new LongOpenHashSet();
+	private LongOpenHashSet cheaplighting$trackedLitChunkPos;
 
 	@Override
 	public double cl$getDynamicLightX() {
@@ -118,6 +118,9 @@ public abstract class BlockEntityMixin implements DynamicLightSource {
 		if (luminance != this.cheaplighting$lastLuminance) {
 			this.cheaplighting$lastLuminance = luminance;
 
+			if (this.cheaplighting$trackedLitChunkPos == null) {
+				this.cheaplighting$trackedLitChunkPos = new LongOpenHashSet();
+			}
 			if (this.cheaplighting$trackedLitChunkPos.isEmpty()) {
 				var chunkPos = new BlockPos.MutableBlockPos(Math.floorDiv(this.worldPosition.getX(), 16),
 						Mth.floorDiv(this.worldPosition.getY(), 16),
@@ -152,7 +155,7 @@ public abstract class BlockEntityMixin implements DynamicLightSource {
 
 	@Override
 	public void cheaplighting$scheduleTrackedChunksRebuild(@NotNull LevelRenderer renderer) {
-		if (this.level == Minecraft.getInstance().level)
+		if (this.cheaplighting$trackedLitChunkPos != null && this.level == Minecraft.getInstance().level)
 			for (long pos : this.cheaplighting$trackedLitChunkPos) {
 				CheapLighting.scheduleChunkRebuild(renderer, pos);
 			}

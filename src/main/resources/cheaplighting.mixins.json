@@ -7,12 +7,12 @@
   "mixins": [],
   "client": [
     "BlockEntityTypeMixin",
+    "BoundTickingBlockEntityMixin",
     "ClientLevelMixin",
     "CommonLevelRendererMixin",
     "DebugScreenOverlayMixin",
     "EntityRendererMixin",
     "EntityTypeMixin",
-    "LevelMixin",
     "LevelRendererMixin",
     "MinecraftClientMixin",
     "WorldRendererMixin",

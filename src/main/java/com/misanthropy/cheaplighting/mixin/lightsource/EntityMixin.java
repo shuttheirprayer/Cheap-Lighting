@@ -67,7 +67,7 @@ public abstract class EntityMixin implements DynamicLightSource {
 	@Unique
 	private double cheaplighting$prevZ;
 	@Unique
-	private LongOpenHashSet cheaplighting$trackedLitChunkPos = new LongOpenHashSet();
+	private LongOpenHashSet cheaplighting$trackedLitChunkPos;
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	public void onTick(CallbackInfo ci) {
@@ -200,7 +200,7 @@ public abstract class EntityMixin implements DynamicLightSource {
 
 	@Override
 	public void cheaplighting$scheduleTrackedChunksRebuild(@NotNull LevelRenderer renderer) {
-		if (Minecraft.getInstance().level == this.level)
+		if (this.cheaplighting$trackedLitChunkPos != null && Minecraft.getInstance().level == this.level)
 			for (long pos : this.cheaplighting$trackedLitChunkPos) {
 				CheapLighting.scheduleChunkRebuild(renderer, pos);
 			}
