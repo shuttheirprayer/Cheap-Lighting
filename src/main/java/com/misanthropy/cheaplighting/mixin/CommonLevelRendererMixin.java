@@ -1,6 +1,7 @@
 package com.misanthropy.cheaplighting.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.misanthropy.cheaplighting.CheapLighting;
 import com.misanthropy.cheaplighting.accessor.WorldRendererAccessor;
@@ -24,8 +25,13 @@ public abstract class CommonLevelRendererMixin implements WorldRendererAccessor 
 	)
 	private static int onGetLightmapCoordinates(int original, @Local(argsOnly = true) BlockAndTintGetter level, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) BlockPos pos) {
 		CheapLighting lighting = CheapLighting.get();
+		int result = original;
 		if (lighting.getLightSourcesCount() != 0 && lighting.config.getDynamicLightsMode().isEnabled() && !state.isSolidRender(level, pos))
-			return lighting.getLightmapWithDynamicLight(pos, original);
-		return original;
+			result = lighting.getLightmapWithDynamicLight(pos, original);
+		if (RenderSystem.isOnRenderThread()) {
+			CheapLighting.lastLitPos = pos;
+			CheapLighting.lastLitColor = result;
+		}
+		return result;
 	}
 }

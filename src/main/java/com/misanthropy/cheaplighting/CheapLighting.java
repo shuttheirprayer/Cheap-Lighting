@@ -39,6 +39,8 @@ public class CheapLighting  {
 	private static final double MAX_RADIUS = 7.75;
 	private static final double MAX_RADIUS_SQUARED = MAX_RADIUS * MAX_RADIUS;
 	private static CheapLighting INSTANCE;
+	public static BlockPos lastLitPos;
+	public static int lastLitColor;
 	private static final DynamicLightSource[] NO_LIGHT_SOURCES = new DynamicLightSource[0];
 	public final Logger logger = LoggerFactory.getLogger(NAMESPACE);
 	public final DynamicLightsConfig config = new DynamicLightsConfig();
