@@ -29,7 +29,7 @@ Thumbs.db
 desktop.ini
 curseforge/
 *.zip
-
+src/test
 gradlew
 gradlew.bat
 libs/

@@ -1,4 +1,4 @@
-package com.misanthropy.cheaplighting.mixin;
+    package com.misanthropy.cheaplighting.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.misanthropy.cheaplighting.CheapLighting;

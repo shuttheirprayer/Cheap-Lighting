@@ -168,6 +168,13 @@ dependencies {
     implementation 'com.google.guava:guava:33.0.0-jre'
 
     implementation fg.deobf(fileTree(dir: 'libs', include: ['*.jar']))
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -3,6 +3,8 @@ package com.misanthropy.cheaplighting;
 import com.misanthropy.cheaplighting.accessor.WorldRendererAccessor;
 import com.misanthropy.cheaplighting.api.DynamicLightHandlers;
 import com.misanthropy.cheaplighting.api.item.ItemLightSources;
+import com.mojang.blaze3d.systems.RenderSystem;
+import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -47,6 +49,12 @@ public class CheapLighting  {
 	private final Set<DynamicLightSource> dynamicLightSources = new HashSet<>();
 	private final ReentrantReadWriteLock lightSourcesLock = new ReentrantReadWriteLock();
 	private volatile DynamicLightSource[] lightSourcesView = NO_LIGHT_SOURCES;
+	private volatile LightGrid lightGrid;
+	private volatile int lightGridStamp = 1;
+	private static final int BLOCK_CACHE_SIZE = 4096;
+	private final long[] blockCacheKeys = new long[BLOCK_CACHE_SIZE];
+	private final double[] blockCacheLevels = new double[BLOCK_CACHE_SIZE];
+	private final int[] blockCacheStamps = new int[BLOCK_CACHE_SIZE];
 	private long lastUpdate = System.currentTimeMillis();
 	private int lastUpdateCount = 0;
 
@@ -83,6 +91,7 @@ public class CheapLighting  {
 		if (!this.config.getDynamicLightsMode().isEnabled())
 			return;
 
+		this.invalidateLightGrid();
 		long now = System.currentTimeMillis();
 		if (now >= this.lastUpdate + 50) {
 			this.lastUpdate = now;
@@ -123,7 +132,18 @@ public class CheapLighting  {
 	}
 
 	public double getDynamicLightLevel(@NotNull BlockPos pos) {
-		return this.getDynamicLightLevel(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+		if (this.lightSourcesView.length < LightGrid.MIN_SOURCES || !RenderSystem.isOnRenderThread())
+			return this.getDynamicLightLevel(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+		long key = pos.asLong();
+		int stamp = this.lightGridStamp;
+		int slot = (int) HashCommon.mix(key) & (BLOCK_CACHE_SIZE - 1);
+		if (this.blockCacheStamps[slot] == stamp && this.blockCacheKeys[slot] == key)
+			return this.blockCacheLevels[slot];
+		double level = this.getDynamicLightLevel(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+		this.blockCacheKeys[slot] = key;
+		this.blockCacheLevels[slot] = level;
+		this.blockCacheStamps[slot] = stamp;
+		return level;
 	}
 
 	public double getDynamicLightLevel(double x, double y, double z) {
@@ -132,11 +152,29 @@ public class CheapLighting  {
 			return 0;
 
 		double result = 0;
-		for (var lightSource : lightSources) {
-			result = maxDynamicLightLevel(x, y, z, lightSource, result);
+		if (lightSources.length >= LightGrid.MIN_SOURCES) {
+			result = this.lightGrid(lightSources).query(x, y, z);
+		} else {
+			for (var lightSource : lightSources) {
+				result = maxDynamicLightLevel(x, y, z, lightSource, result);
+			}
 		}
 
 		return Mth.clamp(result, 0, 15);
+	}
+
+	private LightGrid lightGrid(DynamicLightSource[] view) {
+		LightGrid grid = this.lightGrid;
+		int stamp = this.lightGridStamp;
+		if (grid == null || grid.stamp != stamp) {
+			grid = new LightGrid(view, stamp, MAX_RADIUS);
+			this.lightGrid = grid;
+		}
+		return grid;
+	}
+
+	public void invalidateLightGrid() {
+		this.lightGridStamp++;
 	}
 
 	public static double maxDynamicLightLevel(double x, double y, double z, @NotNull DynamicLightSource lightSource, double currentLightLevel) {
