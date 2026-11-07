@@ -85,13 +85,13 @@ public class CheapLighting  {
 
 	private void refreshLightSourcesView() {
 		this.lightSourcesView = this.dynamicLightSources.toArray(NO_LIGHT_SOURCES);
+		this.invalidateLightGrid();
 	}
 
 	public void updateAll(@NotNull LevelRenderer renderer) {
 		if (!this.config.getDynamicLightsMode().isEnabled())
 			return;
 
-		this.invalidateLightGrid();
 		long now = System.currentTimeMillis();
 		if (now >= this.lastUpdate + 50) {
 			this.lastUpdate = now;
@@ -132,7 +132,9 @@ public class CheapLighting  {
 	}
 
 	public double getDynamicLightLevel(@NotNull BlockPos pos) {
-		if (this.lightSourcesView.length < LightGrid.MIN_SOURCES || !RenderSystem.isOnRenderThread())
+		if (this.lightSourcesView.length == 0)
+			return 0;
+		if (!RenderSystem.isOnRenderThread())
 			return this.getDynamicLightLevel(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		long key = pos.asLong();
 		int stamp = this.lightGridStamp;
