@@ -2,6 +2,7 @@ package com.misanthropy.cheaplighting.api;
 
 import com.misanthropy.cheaplighting.CheapLighting;
 import com.misanthropy.cheaplighting.accessor.DynamicLightHandlerHolder;
+import com.misanthropy.cheaplighting.api.entity.EntityLightSources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -90,15 +91,16 @@ public final class DynamicLightHandlers {
 			return 0;
 		if (entity == Minecraft.getInstance().player && !CheapLighting.get().config.getSelfLightSource().get())
 			return 0;
-		var handler = (DynamicLightHandler<T>) getDynamicLightHandler(entity.getType());
-		if (handler == null)
-			return 0;
 		if (!canLightUp(entity))
 			return 0;
+		int luminance = EntityLightSources.getLuminance(entity);
+		var handler = (DynamicLightHandler<T>) getDynamicLightHandler(entity.getType());
+		if (handler == null)
+			return luminance;
 		if (handler.isWaterSensitive(entity)
 				&& !entity.level().getFluidState(BlockPos.containing(entity.getX(), entity.getEyeY(), entity.getZ())).isEmpty())
-			return 0;
-		return handler.getLuminance(entity);
+			return luminance;
+		return Math.max(luminance, handler.getLuminance(entity));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -2,7 +2,9 @@ package com.misanthropy.cheaplighting;
 
 import com.misanthropy.cheaplighting.accessor.WorldRendererAccessor;
 import com.misanthropy.cheaplighting.api.DynamicLightHandlers;
+import com.misanthropy.cheaplighting.api.entity.EntityLightSources;
 import com.misanthropy.cheaplighting.api.item.ItemLightSources;
+import com.misanthropy.cheaplighting.compat.DynamicLanternCompat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -44,6 +46,7 @@ public class CheapLighting  {
 	public static BlockPos lastLitPos;
 	public static int lastLitColor;
 	private static final DynamicLightSource[] NO_LIGHT_SOURCES = new DynamicLightSource[0];
+	private static boolean dynamicLanternLoaded;
 	public final Logger logger = LoggerFactory.getLogger(NAMESPACE);
 	public final DynamicLightsConfig config = new DynamicLightsConfig();
 	private final Set<DynamicLightSource> dynamicLightSources = new HashSet<>();
@@ -60,6 +63,7 @@ public class CheapLighting  {
 
 	public CheapLighting() {
 		INSTANCE = this;
+		dynamicLanternLoaded = net.minecraftforge.fml.ModList.get().isLoaded("dynamiclantern");
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::clientSetup);
 		modEventBus.addListener(this::registerReloadListeners);
@@ -73,6 +77,7 @@ public class CheapLighting  {
 
 	private void registerReloadListeners(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener((ResourceManagerReloadListener) ItemLightSources::load);
+		event.registerReloadListener((ResourceManagerReloadListener) EntityLightSources::load);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
@@ -343,6 +348,9 @@ public class CheapLighting  {
 			if (!equipped.isEmpty())
 				luminance = Math.max(luminance, CheapLighting.getLuminanceFromItemStack(equipped, submergedInFluid));
 		}
+
+		if (dynamicLanternLoaded && entity instanceof Player player)
+			luminance = Math.max(luminance, DynamicLanternCompat.getWaistLuminance(player, submergedInFluid));
 
 		return luminance;
 	}
