@@ -161,6 +161,7 @@ dependencies {
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.4")) {
+        jarJar.ranged(it, "[0.5.4,)")
     }
 
     implementation("org.apache.commons:commons-compress:1.28.0")
